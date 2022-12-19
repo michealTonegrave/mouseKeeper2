@@ -1,8 +1,6 @@
 import java.awt.Robot;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Frame;
 import processing.awt.PSurfaceAWT;
+import com.jogamp.newt.opengl.GLWindow;
 
 
 PVector windowPos;
@@ -30,9 +28,9 @@ static{
 
 
 void setup(){
-  size(400,400);
+  size(350,350, P2D); //need P2D because of a stupid bug about pixel density
   smooth();
-  arrowKey = loadImage("keyboard_key_up.png");
+  arrowKey = loadImage("data/keyboard_key_up.png");
 }
 
 void draw(){
@@ -60,10 +58,8 @@ void update(){
 }
 
 void updateWindowPosition(){
-  Frame window = ((PSurfaceAWT.SmoothCanvas)((PSurfaceAWT)surface).getNative()).getFrame();
-  Point pframe = window.getLocation();
-  windowPos = new PVector((float) pframe.getX() + wind_x_offset, (float) pframe.getY()
-                          + wind_y_offset);
+  GLWindow window = (GLWindow)surface.getNative();
+  windowPos = new PVector((float) window.getX(), (float) window.getY());
 }
 
 void show(){
