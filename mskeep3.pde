@@ -1,6 +1,6 @@
 import java.awt.Robot;
-import processing.awt.PSurfaceAWT;
-import com.jogamp.newt.opengl.GLWindow;
+import java.awt.MouseInfo;
+import java.awt.Point;
 
 
 PVector windowPos;
@@ -12,8 +12,10 @@ float wind_y_offset = 35.0f;
 boolean pause = true;
 color active = color(50,55,100);
 color inactive = color (50);
-color backgroundColor = color(255);
+color backgroundColor = color(200);
 PImage arrowKey;
+PImage moon;
+PImage star;
 static float increment = 0.08f;
 static Robot rob;
 
@@ -30,26 +32,33 @@ static{
 void setup(){
   size(350,350, P2D); //need P2D because of a stupid bug about pixel density
   smooth();
-  arrowKey = loadImage("data/keyboard_key_up.png");
+  surface.setTitle("Mouse Keeper");
+  PJOGL.setIcon("data/icon.ico");
+  arrowKey = loadImage("data/lclick.png");
+  moon = loadImage("data/moon.png");
+  star = loadImage("data/star.png");
 }
 
 void draw(){
-  updateWindowPosition();
   background(backgroundColor);
   update();
   show();
 }
 
-void keyPressed(){
-  if(key == CODED && keyCode == UP){
-    pause = !pause;
-  }  
+
+void mousePressed(){
+  pause = !pause;
+  if(!pause){
+    updateWindowPosition();
+  }
 }
 
+
 void update(){
+  cursor(star);
   if(!pause){
-    pos_x = (100 * cos(alfa)) + width/2;
-    pos_y = (100 * sin(alfa)) + height/2;
+    pos_x = (50 * cos(alfa)) + width/2;
+    pos_y = (50 * sin(alfa)) + height/2;
     alfa += increment;
     PVector mouseVector = PVector.add(windowPos, new PVector(pos_x,pos_y));
     rob.mouseMove((int) mouseVector.x, (int) mouseVector.y);
@@ -58,20 +67,23 @@ void update(){
 }
 
 void updateWindowPosition(){
-  GLWindow window = (GLWindow)surface.getNative();
-  windowPos = new PVector((float) window.getX(), (float) window.getY());
+  Point mpoint = MouseInfo.getPointerInfo().getLocation();
+  windowPos =  PVector.sub(new PVector((float) mpoint.getX(), (float) mpoint.getY()), new PVector(mouseX, mouseY));
 }
 
 void show(){
-  image(arrowKey,0,height - 30, 30,30);
+  imageMode(CORNER);
+  image(arrowKey,10,height - 30, 30,30);
   fill(0);
   textSize(15);
-  text(": start/pause",35,height - 10);
+  text(": right click or pad-click to start/pause",45,height - 10);
+
   updateColor();
-  noStroke();
+  strokeWeight(3);
+  stroke(50);
   ellipse(width/2,height/2, 230,230);
-  fill(backgroundColor);
-  ellipse(width/2,height/2,70,70);
+  imageMode(CENTER);
+  image(moon,width/2, height/2, 80,80);
 }
 
 void updateColor(){
