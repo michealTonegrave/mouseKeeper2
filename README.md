@@ -3,5 +3,5 @@
  
  ## Download Link:
  
- - [mouseKeeper-windx64.zip](https://downgit.github.io/#/home?url=https://github.com/michealTonegrave/mouseKeeper2/blob/windows-amd-64.exe/MouseKeeper-Windx64.zip)
+ - [mouseKeeper-windx64.zip](https://downgit.github.io/#/home?url=https://github.com/michealTonegrave/mouseKeeper2/blob/windows-amd-64.exe/mousekeeperWinx64.zip)
  
